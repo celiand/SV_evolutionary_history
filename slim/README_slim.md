@@ -28,5 +28,5 @@ Further plots are done using <ins>analyze_svsimu.R</ins> (Figure 6A; Supplementa
 
 
 ## Ibs analysis
-For SVs generated using simulations, the Ibs analysis is done using <ins>ibs_haplotype_simudata.sh</ins> and <ins>run_ibsstat.R</ins> (Figure 6B,c; Supplementary figure 9).
+For SVs generated using simulations, the Ibs analysis is done using <ins>ibs_haplotype_simudata.sh</ins> and <ins>run_ibsstat.R</ins>.
 
