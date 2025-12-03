@@ -1,0 +1,176 @@
+// set up a simple neutral simulation
+initialize() {
+	//coefsel=1.0;
+	//defineConstant("coefselscript",1.0);
+
+
+	initializeMutationRate(1.06e-8); // from Kristina's paper  
+	
+	// m1 mutation type: neutral to start
+	initializeMutationType("m1", 0, "f", 0.0);
+	
+	// m2 for the SV
+	initializeMutationType("m2", 0, "f",0.0);
+	m2.convertToSubstitution = F;
+	// g1 genomic element type: uses m1 for all mutations
+	initializeGenomicElementType("g1", m1, 1.0);
+	
+	// uniform chromosome of length 100 kb with uniform recombination
+	initializeGenomicElement(g1, 0, 99999);
+	initializeRecombinationRate(1e-8);
+}
+
+
+
+//-------------------------------------------------------------------
+// Define the recombination callback to prevent crossing over to happens when an individual is carrying a copy of each arrangement (tracked through the m6 position). It prevents the formation of a breakpoints in the inversion region.  
+//-------------------------------------------------------------------
+recombination() {
+	if (genome1.containsMarkerMutation(m2, 40000) == genome2.containsMarkerMutation(m2, 40000))
+		return F;
+	sv = (breakpoints > 30000) & (breakpoints < 60000);
+	if (sum(sv) == 0)
+		return F;
+	breakpoints = breakpoints[!sv];
+	
+	return T;
+}
+
+// read the burn in file and create the sv in individual -indv- in haplotype -haplo-. These two values are provided in the slim call.
+
+// create the SV a long time before the split
+100000 late () {
+	sim.readFromPopulationFile("/mnt/SCRATCH/cedi/phDSalmon/slimfolder/burn_in.txt");
+	
+	p1.setSubpopulationSize(4000);
+}
+
+
+//After 500 generations, split initial population and remove it
+100500 early() {
+	sim.addSubpopSplit("p2", 2000, p1);
+	sim.addSubpopSplit("p3", 2000, p1);
+	p1.setSubpopulationSize(0);
+}
+
+
+
+
+//check reccurency every X generation to make the SV
+100500:102500 late(){
+	//make independant reccurence for p2 and p3
+	nbsampledp2=rdunif(1,0,rec_rate);
+	//if number if 1, then SV happen
+	if(nbsampledp2==1){
+		
+		indv=rdunif(1,0,1999); //randomly select one individual
+		haplo=rdunif(1,0,1); // randomly select haplotype
+		target=p2.individuals[indv];
+		gen=target.genomes[haplo];
+		gen.addNewDrawnMutation(m2,40000);
+		
+		//create 100 identical haplotypes
+		//get SNPs inside the SV of the initial SV haplotype
+		mutinindv=gen.mutationsOfType(m1);
+		//print(mutinindv.position);
+		mutinSV=mutinindv[mutinindv.position >= 30000 & mutinindv.position <= 60000];
+		
+		nbSV=99;
+		drawn_indices = runif(nbSV, 0, size(p2.individuals.genomes));
+		extra_target_genomes = p2.individuals.genomes[asInteger(drawn_indices)];
+		
+		for (genome in extra_target_genomes) {
+			//remove SNPs of that individuals in the SV region
+			mutinindv2=genome.mutationsOfType(m1);
+			mutinSV2=mutinindv2[mutinindv2.position >= 30000 & mutinindv2.position <= 60000];
+			genome.removeMutations(mutinSV2);
+			
+			//add the SNPs of the initial SV haplotype
+			genome.addMutations(mutinSV);
+			
+			//add the SV
+			genome.addNewDrawnMutation(m2,40000);
+		
+		}
+	
+	}
+	
+	nbsampledp3=rdunif(1,0,rec_rate);
+	
+	if(nbsampledp3==1){
+		
+		indv=rdunif(1,0,1999); //randomly select one individual
+		haplo=rdunif(1,0,1); // randomly select haplotype
+		target=p3.individuals[indv];
+		gen=target.genomes[haplo];
+		gen.addNewDrawnMutation(m2,40000);
+		
+		//create 100 identical haplotypes
+		//get SNPs inside the SV of the initial SV haplotype
+		mutinindv=gen.mutationsOfType(m1);
+		//print(mutinindv.position);
+		mutinSV=mutinindv[mutinindv.position >= 30000 & mutinindv.position <= 60000];
+		
+		
+		nbSV=99;
+		drawn_indices = runif(nbSV, 0, size(p3.individuals.genomes));
+		extra_target_genomes = p3.individuals.genomes[asInteger(drawn_indices)];
+		
+		for (genome in extra_target_genomes) {
+			//remove SNPs of that individuals in the SV region
+			mutinindv2=genome.mutationsOfType(m1);
+			mutinSV2=mutinindv2[mutinindv2.position >= 30000 & mutinindv2.position <= 60000];
+			genome.removeMutations(mutinSV2);
+			
+			//add the SNPs of the initial SV haplotype
+			genome.addMutations(mutinSV);
+			
+			//add the SV
+			genome.addNewDrawnMutation(m2,40000);
+		
+		}
+	}
+}
+
+
+//check if m2 exist at the end of the simulations
+102450:102500 early(){
+	
+	// Check consition to stop the simulations if the inversion is either lost or fixed in the whole populations. Export the final stage of the final status of the popuation.
+	if (sim.countOfMutationsOfType(m2)==0){
+		//output to say that the SV was lost
+		print("MESSAGE: simulation failed");
+		sim.simulationFinished();
+	}
+}
+
+100500:102500 mutationEffect(m2){
+s_het=coefsel;
+relFitness=0.0;
+	if (individual.genome1.countOfMutationsOfType(m2)+individual.genome2.countOfMutationsOfType(m2)==1)
+		return s_het;
+	else
+		return relFitness;
+}
+
+// 15 generations before the end (now), split again to make the domesticated populations
+102485 early() {
+	sim.addSubpopSplit("p4", 50, p2);
+	sim.addSubpopSplit("p5", 50, p3);
+}
+
+// end of simulation (now), export 50 ind vcf
+102500 late() {
+	//sim.outputFull("C:/Users/cedi/OneDrive - Norwegian University of Life Sciences/Documents/Slim_workingspace/fullsim.txt");
+	print("MESSAGE: simulation succeed");
+	filpepathp2="/mnt/SCRATCH/cedi/phDSalmon/slimfolder/vcf_fromslim/pop2_vcf_run"+nbrun+"_recurrent_sv_selec_het.vcf";
+	filpepathp3="/mnt/SCRATCH/cedi/phDSalmon/slimfolder/vcf_fromslim/pop3_vcf_run"+nbrun+"_recurrent_sv_selec_het.vcf";
+	p2.outputVCFSample(50,replace=F,filePath=filpepathp2);
+	p3.outputVCFSample(50,replace=F,filePath=filpepathp3);
+	
+	//then for farmed pop
+	filpepathp4="/mnt/SCRATCH/cedi/phDSalmon/slimfolder/vcf_fromslim/pop4_vcf_run"+nbrun+"_recurrent_sv_selec_het.vcf";
+	filpepathp5="/mnt/SCRATCH/cedi/phDSalmon/slimfolder/vcf_fromslim/pop5_vcf_run"+nbrun+"_recurrent_sv_selec_het.vcf";
+	p4.outputVCFSample(50,replace=F,filePath=filpepathp4);
+	p5.outputVCFSample(50,replace=F,filePath=filpepathp5);
+}

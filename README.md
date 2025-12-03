@@ -9,7 +9,7 @@ The subfolder **Others** contains others scripts for analysis and plotting, with
 
 
 
-## general usage
+## General usage
 
 
 
@@ -19,7 +19,7 @@ The script <ins>get_vcf_stat.sh</ins> is a tool used in many others scripts, inc
 
 
 
-## analysis of Bayestyper_SVs
+## Analysis of Bayestyper_SVs
 
 
 
@@ -31,11 +31,11 @@ The script <ins>get_vcf_stat.sh</ins> is a tool used in many others scripts, inc
 
 
 
-## analysis of lostruct_SVs
+## Analysis of lostruct_SVs
 
 
 
-Most plots of Figure 3 and 4 are done using scripts in the SV\_PCA\_calling drectory
+Most plots of Figure 3 and 4 are done using scripts in the SV\_PCA\_calling directory.
 
 
 

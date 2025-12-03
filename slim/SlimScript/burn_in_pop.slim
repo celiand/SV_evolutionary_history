@@ -1,0 +1,41 @@
+// set up a simple neutral simulation
+initialize() {
+	initializeMutationRate(1.06e-8); // from Kristina's paper 
+	
+	// m1 mutation type: neutral to start
+	initializeMutationType("m1", 0, "f", 0.0);
+	
+	// m2 for the SV
+	initializeMutationType("m2", 0, "f", 0.0);
+	m2.convertToSubstitution = F;
+	// g1 genomic element type: uses m1 for all mutations
+	initializeGenomicElementType("g1", m1, 1.0);
+	
+	// uniform chromosome of length 100 kb with uniform recombination
+	initializeGenomicElement(g1, 0, 99999);
+	initializeRecombinationRate(1e-8);
+}
+
+// create a population of 4000 individuals
+1 early() {
+	sim.addSubpop("p1", 4000);
+}
+
+
+//burn in of 100 000 gen to start
+
+2:100000 late(){
+if(sim.cycle % 10000 == 0 ){
+	print(sim.cycle);
+	}
+}
+
+// In generation 100 000 export the population.
+100000 late() {
+	sim.outputFull("C:/Users/cedi/OneDrive - Norwegian University of Life Sciences/Documents/Slim_workingspace/burn_in.txt");
+}
+
+
+
+
+/// parameters to find: mutation rate, recombination rate, size of genome (and if several chromosome), mutation effect, nb of generation of burn in 
