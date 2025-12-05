@@ -16,6 +16,7 @@ The subfolder **Others** contains others scripts for analysis and plotting, with
 The script <ins>get_vcf_stat.sh</ins> is a tool used in many others scripts, including those used to generate data. It assemble some useful commands to extract information from vcf files.
 
 
+TE library for Atlantic salmon was made using <ins>Make_TE_library</ins>.
 
 
 
