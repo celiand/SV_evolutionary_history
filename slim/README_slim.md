@@ -24,7 +24,7 @@ The scripts are inspired by _Berdan, E. L., Blanckaert, A., Butlin, R. K., & Ban
 
 After running script, <ins>Format_slim_result.sh</ins> to fromat vcf results in a single table, especially retrieving the type of each mutations (SNP or SV) and its frequency.
 
-Further plots are done using <ins>analyze_svsimu.R</ins> (Figure 6A; Supplementary figure 8).
+Further plots are done using <ins>analyze_svsimu.R</ins> (Figure 6A; Supplementary figure 7).
 
 
 ## Ibs analysis

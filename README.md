@@ -49,19 +49,19 @@ Most plots of Figure 3 and 4 are done using scripts in the **SV_PCA_calling** di
 - <ins>frequency_SV_plot.R</ins> is used to plot frequency of lostruct_SVs (and bayestyper_SVs) (Figure 5).
 
 
-- <ins>xpehh_overlap.R</ins> is used to investigate overlap of lostructs_SVs and bayestyper_SVs with xpehh data from *Buso, P., Diblasi, C., Manousi, D., Kwak, J. S., Vera-Ponce de Leon, A., Stenl??kk, K., ... & Saitou, M. (2025). Parallel Selection in Domesticated Atlantic Salmon from Divergent Founders Including on Whole-Genome Duplication-derived Homeologous Regions. Genome Biology and Evolution, 17(4), evaf063.*
+- <ins>xpehh_overlap.R</ins> is used to investigate overlap of lostructs_SVs and bayestyper_SVs with xpehh data from *Buso, P., Diblasi, C., Manousi, D., Kwak, J. S., Vera-Ponce de Leon, A., StenlC8kk, K., ... & Saitou, M. (2025). Parallel Selection in Domesticated Atlantic Salmon from Divergent Founders Including on Whole-Genome Duplication-derived Homeologous Regions. Genome Biology and Evolution, 17(4), evaf063.* (Supplementary figure 6)
 
 
-- <ins>ibs_haplotype_LostructSV.sh</ins> is used to run ibs analysis on lostruct_SVs, and plots are made using <ins>plot_lostruct_ibs.R</ins> (Figure 6 B,C and Supplementary figure 9).
+- <ins>ibs_haplotype_LostructSV.sh</ins> is used to run ibs analysis on lostruct_SVs, and plots are made using <ins>plot_lostruct_ibs.R</ins> (Figure 6 B,C and Supplementary figure 8).
 
 
-- <ins>TE_recurrent_Svs.R</ins> is used to analyze the TE content around reccurent and non recurrent lostruct_SVs (Supplementary figure 10).
+- <ins>TE_recurrent_Svs.R</ins> is used to analyze the TE content around reccurent and non recurrent lostruct_SVs (Supplementary figure 9).
 
 
 
 ## Data
 
-The **data** folder include the main data generated and used in others scripts:
+The **Others/Data** folder include the main data generated and used in others scripts:
 
 - SV_info_table_farmed_Europe.txt and Bayestyper_Sv_info_table_farmed_europe.txt: respectively manta and bayestyper SV list and coordinates
 
