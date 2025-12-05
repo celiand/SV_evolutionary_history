@@ -32,8 +32,11 @@ The script <ins>get_vcf_stat.sh</ins> is a tool used in many others scripts, inc
 - <ins>ibs_haplotype_bayestyperSV.sh</ins> is used to run ibs analysis on bayestyper_SVs, and plots can be made using <ins>plot_bayestyper_ibs.R</ins>.
 
 
-## Analysis of lostruct_SVs
+- <ins>Pca_outlier.R</ins> is used to make a PCA using besytyper_SVs which helped to identify the outlier sample (Supplementary figure 3).
 
+
+
+## Analysis of lostruct_SVs
 
 
 Most plots of Figure 3 and 4 are done using scripts in the **SV_PCA_calling** directory.
@@ -46,7 +49,14 @@ Most plots of Figure 3 and 4 are done using scripts in the **SV_PCA_calling** di
 - <ins>frequency_SV_plot.R</ins> is used to plot frequency of lostruct_SVs (and bayestyper_SVs) (Figure 5).
 
 
+- <ins>xpehh_overlap.R</ins> is used to investigate overlap of lostructs_SVs and bayestyper_SVs with xpehh data from *Buso, P., Diblasi, C., Manousi, D., Kwak, J. S., Vera-Ponce de Leon, A., Stenl??kk, K., ... & Saitou, M. (2025). Parallel Selection in Domesticated Atlantic Salmon from Divergent Founders Including on Whole-Genome Duplication-derived Homeologous Regions. Genome Biology and Evolution, 17(4), evaf063.*
+
+
 - <ins>ibs_haplotype_LostructSV.sh</ins> is used to run ibs analysis on lostruct_SVs, and plots are made using <ins>plot_lostruct_ibs.R</ins> (Figure 6 B,C and Supplementary figure 9).
+
+
+- <ins>TE_recurrent_Svs.R</ins> is used to analyze the TE content around reccurent and non recurrent lostruct_SVs (Supplementary figure 10).
+
 
 
 ## Data
