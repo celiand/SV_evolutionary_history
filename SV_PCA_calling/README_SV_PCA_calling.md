@@ -9,7 +9,7 @@ Outliers region where identified using the lostruct packages and the built in sc
 
 
 
-Detected outlier regions where then recorded in a files and a grouping was done using kmeans (see Methods); to generate a file With all regions and assign each individual to one group.
+Detected outlier regions where then recorded in a file (for instance, one file for each chromosome). Further investigation of the selected region is done using <ins>Cluster_individuals.R</ins>, using kmeans (see Methods); to generate a file With all regions and assign each individual to one group.
 
 
 
